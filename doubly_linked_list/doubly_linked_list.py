@@ -116,21 +116,11 @@ class DoublyLinkedList:
     """
 
     def move_to_front(self, node):
-        is_tail = node.next == None
         is_head = node.prev == None
-        prev_node = node.prev
-        next_node = node.next
         if is_head:
             return None
-        if is_tail:
-            prev_node.next = None
-            self.tail = prev_node
-            self.length -= 1
-            self.add_to_head(node.value)
         else:
-            prev_node.next = next_node
-            next_node.prev = prev_node
-            self.length -= 1
+            self.delete(node)
             self.add_to_head(node.value)
 
     """
@@ -140,20 +130,10 @@ class DoublyLinkedList:
 
     def move_to_end(self, node):
         is_tail = node.next == None
-        is_head = node.prev == None
-        prev_node = node.prev
-        next_node = node.next
         if is_tail:
             return None
-        if is_head:
-            next_node.prev = None
-            self.head = next_node
-            self.length -= 1
-            self.add_to_tail(node.value)
         else:
-            prev_node.next = next_node
-            next_node.prev = prev_node
-            self.length -= 1
+            self.delete(node)
             self.add_to_tail(node.value)
 
     """
