@@ -10,6 +10,12 @@ class ListNode:
         self.value = value
         self.next = next
 
+    def delete(self):
+        if self.prev:
+            self.prev.next = self.next
+        if self.next:
+            self.next.prev = self.prev
+
 
 """
 Our doubly-linked list class. It holds references to
@@ -51,22 +57,9 @@ class DoublyLinkedList:
     """
 
     def remove_from_head(self):
-        has_no_items = self.head is None and self.tail is None
-        has_one_item = self.head == self.tail
         value = self.head.value
-        if has_no_items:
-            return None
-        if has_one_item:
-            self.tail = None
-            self.head = None
-            self.length = 0
-            return value
-        else:
-            new_head = self.head.next
-            new_head.prev = None
-            self.length -= 1
-            self.head = new_head
-            return value
+        self.delete(self.head)
+        return value
 
     """
     Wraps the given value in a ListNode and inserts it
@@ -93,22 +86,9 @@ class DoublyLinkedList:
     """
 
     def remove_from_tail(self):
-        has_no_items = self.head is None and self.tail is None
-        has_one_item = self.head == self.tail
         value = self.tail.value
-        if has_no_items:
-            return None
-        if has_one_item:
-            self.tail = None
-            self.head = None
-            self.length = 0
-            return value
-        else:
-            prev_node = self.tail.prev
-            prev_node.next = None
-            self.length -= 1
-            self.tail = prev_node
-            return value
+        self.delete(self.tail)
+        return value
 
     """
     Removes the input node from its current spot in the
@@ -142,22 +122,32 @@ class DoublyLinkedList:
     """
 
     def delete(self, node):
+        has_no_items = self.head is None and self.tail is None
+        has_one_item = self.head == self.tail
         is_tail = node.next == None
         is_head = node.prev == None
-        prev_node = node.prev
-        next_node = node.next
+
         value = node.value
-        if is_head:
-            self.remove_from_head()
-            return value
-        if is_tail:
-            self.remove_from_tail()
-            return value
+
+        if has_no_items:
+            return None
+
+        if has_one_item:
+            self.tail = None
+            self.head = None
+        elif is_head:
+            new_head = self.head.next
+            self.head = new_head
+            node.delete()
+        elif is_tail:
+            prev_node = self.tail.prev
+            self.tail = prev_node
+            node.delete()
         else:
-            prev_node.next = next_node
-            next_node.prev = prev_node
-            self.length -= 1
-            return value
+            node.delete()
+
+        self.length -= 1
+        return value
     """
     Finds and returns the maximum value of all the nodes 
     in the List.
