@@ -38,6 +38,21 @@ class LinkedList:
             # update the "self.tail" to point to the new node that we just added
             self.tail = new_node
 
+    def add_to_head(self, value):
+        # wrap the value in a new Node
+        new_node = Node(value)
+        # check if the linked list is empty
+        if self.head is None and self.tail is None:
+            # set the head and tail to the new node
+            self.head = new_node
+            self.tail = new_node
+        # otherwise the list must have at least one item in there
+        else:
+            # update the new node's next to the previous head
+            new_node.set_next(self.head)
+            # update the "self.tail" to point to the new node that we just added
+            self.head = new_node
+
     def remove_tail(self):
         # check for empty list
         if self.head is None and self.tail is None:
